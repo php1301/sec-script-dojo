@@ -1,0 +1,83 @@
+# ============================================================
+# E14-E16 NOTES: techniques and gotchas
+# ============================================================
+#
+# CHOOSING A PARSER (match the tool to the shape of the data)
+#   Fixed columns, no spaces inside fields    -> line.split() + len() guard
+#   Spaces only inside quotes (Apache/nginx), has header  -> csv.reader/DictReader(delimiter=" ")
+#   Free text, variable word count (syslog)   -> regex, or partition/rpartition on keywords
+#   Don't use csv for auth.log: no quotes, and the timestamp itself has spaces.
+#
+# E14: timestamp + IP (access.log)
+#   - split() gives 10 fields; the quoted request splits into method/path/proto.
+#   - Guard: skip blank lines first ("if not line.split()": [] is falsy).
+#     A corrupted line is still truthy, so also check len(parts) != 10.
+#   - ts keeps the leading "[" -> removeprefix("[") / lstrip("[") / [1:].
+#     The "]" sits in the next field (tz = "+0000]"), because split cuts on the space.
+#   - Weak spots: a space in the path gives 11 fields and shifts every index;
+#     a right-length line with one bad value (status "2OO") still passes.
+#     Fix: validate fields you use (isdigit, ipaddress.ip_address, datetime.strptime)
+#     and write rejects to a file with a reason.
+#   - awk: NF==10 is the same guard. substr() is 1-based:
+#     substr($4,1,1)=="[" checks the bracket, substr($4,2) drops it.
+#     print $1, $2 -> comma gives one space; print $1 $2 glues them (no error).
+#     printf needs an explicit \n. %s string, %d int, %.1f float, %% literal percent.
+#
+# E15: counts per status / per IP
+#   - csv.DictReader(delimiter=" ") keeps the quoted request as ONE field,
+#     so a valid line has 8 fields, not 10. The number of fieldnames must match,
+#     or every row gets None values and is flagged corrupted.
+#   - DictReader never raises on a bad field count:
+#       too few fields  -> missing keys get None as value  (None in row.values())
+#       too many fields -> extras go under the key None    (None in row)
+#   - Counter beats dict.get(k, 0) + 1. most_common() ties are not by IP.
+#   - SORTING TRICKS
+#       sorted() is ascending; a tuple key compares left to right (ties fall through).
+#       Number part: negate it to flip only that part -> key=lambda kv: (-kv[1], kv[0])
+#       String part can't be negated -> sort in 2 passes (sorted is stable):
+#         sort by the secondary key first, then by the primary key.
+#       reverse=True flips everything, including the tie-break.
+#       key can be any one-arg function: lambda, def, len, str.lower, itemgetter.
+#       In "lambda kv", kv is one element of what you sort; for dict.items() it is (key, value).
+#       String order != numeric order ("10.0.0.8" < "9.9.9.9"); use ipaddress.ip_address as key.
+#   - bash: awk | sort | uniq -c | sort. uniq -c needs sorted input and pads the count,
+#     so normalize with awk '{print $1, $2}' before diff.
+#     sort takes flags per key: -k1,1nr -k2,2 = count desc, IP asc.
+#     -k2,2 means field 2 only; -k2 means field 2 to the end of the line.
+#     LC_ALL=C sort gives byte order, like Python string sort.
+#
+# E16: failed SSH logins (auth.log), dynamic fields
+#   - "for invalid user test from ..." shifts the columns, so $9 is wrong.
+#     Anchor on keywords ("for", "from"), never on positions.
+#   - re.match: start of string only. re.search: first hit anywhere. re.findall: list of all hits.
+#     findall returns strings for 0-1 groups and tuples for 2+ groups, loses line numbers,
+#     and never returns None. Per-line search is better for pipelines (keeps the line).
+#   - Pattern: r"Failed password for (.+) from (\S+)"
+#       (.+)  spans several words and is greedy, so it cuts at the LAST " from "
+#             (safer when the username is attacker-controlled). \w+ fails: it can't cross spaces.
+#       (\S+) for the IP: one token, dots kept (\w+ would stop at the first dot -> "45").
+#             \S is loose, so validate with ipaddress.ip_address afterwards.
+#   - Username = who.split()[-1] drops "invalid user" without hard-coding the prefix.
+#     Use (?:invalid user )? only when the prefix is known (non-capturing group).
+#   - Filter "Failed password" first, or "Accepted password" lines get counted.
+#   - bash: grep -o prints the matched text only; grep has no capture groups.
+#     $NF = last field, $(NF-1) = second to last, $(NF-2) = the word before "from".
+#     Always write $(NF-1): $NF-1 means ($NF) - 1.
+#     sed -E 's/^for (.+) from [^ ]+$/\1/' keeps group 1; whatever isn't put back is deleted.
+#     [.+] is a character class (one "." or "+"), not "any text"; use [^ ]+ or .+.
+#     sed -nE '...p' prints only matches, which exposes a pattern that never matched.
+#     \S is GNU-only in grep -E; [^ ]+ works everywhere.
+#     Extract the field first, THEN sort | uniq -c, so the counts group by the field.
+#
+# PYTHON PITFALLS
+#   - f"{row["ts"]}" (same quotes nested) is a SyntaxError before Python 3.12; use row['ts'].
+#   - {print(...) for ...} builds a throwaway set of None; use a plain for loop.
+#   - Don't read a whole file with read()/readlines() for big logs; iterate the file or use islice.
+#
+#
+# INTERVIEW HABITS
+#   - Write the plain split() + guard version first; name the upgrade (csv, regex,
+#     per-field validation, reject file) out loud.
+#   - State complexity (one pass, O(n)) and one edge case before coding.
+#   - Check totals: valid lines only, 9 not 10 for access.log; 6 failures for auth.log.
+#   - Test the line that is meant to break the code (corrupted line, invalid user).

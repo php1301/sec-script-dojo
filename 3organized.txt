@@ -1,0 +1,13 @@
+EX 3
+mOCK 3abc
+xyz123
+sTART l2
+a
+c
+b
+c
+1
+2
+3
+hELLO wORLD
+pypythonton

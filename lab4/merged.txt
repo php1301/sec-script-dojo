@@ -1,0 +1,9 @@
+75
+output17.txt
+data.csv
+report.txt
+notes.log
+Quarterly report
+Revenue increased by 8 percent.
+Expenses remained steady.
+

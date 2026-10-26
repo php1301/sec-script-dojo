@@ -1,0 +1,44 @@
+2026-10-25 08:05:00 sshd[5647]: Failed password for invalid user admin from 203.0.113.80 port 52247 ssh2
+2026-10-25 08:07:35 sshd[5905]: Accepted password for alice from 10.0.1.11 port 52940 ssh2
+2026-10-25 08:08:20 sshd[4929]: Failed password for alice from 10.0.1.11 port 44876 ssh2
+2026-10-25 08:08:40 sshd[2831]: Accepted password for alice from 10.0.1.11 port 33830 ssh2
+2026-10-25 08:10:41 sshd[9390]: Accepted password for carol from 10.0.1.13 port 36793 ssh2
+2026-10-25 08:12:02 sshd[8151]: Accepted password for carol from 10.0.1.13 port 53634 ssh2
+2026-10-25 08:13:07 sshd[1442]: Accepted password for bob from 10.0.1.12 port 53724 ssh2
+2026-10-25 08:14:42 sshd[1891]: Accepted password for bob from 10.0.1.12 port 38127 ssh2
+2026-10-25 08:15:00 sshd[3235]: Failed password for bob from 10.0.1.12 port 36992 ssh2
+2026-10-25 08:15:10 sshd[6869]: Failed password for bob from 10.0.1.12 port 35071 ssh2
+2026-10-25 08:15:30 sshd[3021]: Accepted password for bob from 10.0.1.12 port 45936 ssh2
+2026-10-25 08:16:40 sshd[1631]: Failed password for root from 203.0.113.50 port 57249 ssh2
+2026-10-25 08:16:44 sshd[8149]: Failed password for invalid user admin from 203.0.113.50 port 41585 ssh2
+2026-10-25 08:16:48 sshd[7300]: Failed password for invalid user test from 203.0.113.50 port 50812 ssh2
+2026-10-25 08:16:52 sshd[5218]: Failed password for root from 203.0.113.50 port 39996 ssh2
+2026-10-25 08:16:56 sshd[5122]: Failed password for invalid user admin from 203.0.113.50 port 48620 ssh2
+2026-10-25 08:17:00 sshd[2719]: Failed password for invalid user oracle from 203.0.113.50 port 40768 ssh2
+2026-10-25 08:17:04 sshd[9359]: Failed password for root from 203.0.113.50 port 59185 ssh2
+2026-10-25 08:17:35 sshd[6409]: Accepted password for alice from 10.0.1.11 port 39939 ssh2
+2026-10-25 08:22:57 sshd[5178]: Accepted password for bob from 10.0.1.12 port 49330 ssh2
+2026-10-25 08:25:00 sshd[1594]: Failed password for invalid user admin from 203.0.113.80 port 40039 ssh2
+2026-10-25 08:25:00 sshd[7427]: Failed password for carol from 198.51.100.9 port 49936 ssh2
+2026-10-25 08:25:06 sshd[2248]: Failed password for carol from 198.51.100.9 port 40410 ssh2
+2026-10-25 08:25:12 sshd[4525]: Failed password for carol from 198.51.100.9 port 45918 ssh2
+2026-10-25 08:25:18 sshd[6540]: Failed password for carol from 198.51.100.9 port 44323 ssh2
+2026-10-25 08:25:24 sshd[8431]: Failed password for carol from 198.51.100.9 port 47931 ssh2
+2026-10-25 08:25:40 sshd[3861]: Accepted password for carol from 198.51.100.9 port 53386 ssh2
+2026-10-25 08:31:47 sshd[9186]: Accepted password for dave from 10.0.1.14 port 50565 ssh2
+2026-10-25 08:33:20 sshd[3059]: Failed password for dave from 192.0.2.200 port 58089 ssh2
+2026-10-25 08:33:25 sshd[5384]: Failed password for dave from 192.0.2.200 port 52670 ssh2
+2026-10-25 08:33:30 sshd[8877]: Failed password for dave from 192.0.2.200 port 39154 ssh2
+2026-10-25 08:33:50 sshd[1503]: Accepted password for dave from 192.0.2.200 port 45367 ssh2
+2026-10-25 08:36:40 sshd[2781]: Failed password for root from 203.0.113.60 port 46652 ssh2
+2026-10-25 08:36:50 sshd[1691]: Failed password for root from 203.0.113.60 port 59339 ssh2
+2026-10-25 08:39:28 sshd[6786]: Accepted password for alice from 10.0.1.11 port 30181 ssh2
+2026-10-25 08:41:40 sshd[2441]: Accepted password for erin from 10.0.1.15 port 33744 ssh2
+2026-10-25 08:41:50 sshd[4069]: Failed password for erin from 203.0.113.70 port 31895 ssh2
+2026-10-25 08:41:55 sshd[9971]: Failed password for erin from 203.0.113.70 port 55720 ssh2
+2026-10-25 08:42:00 sshd[4869]: Failed password for erin from 203.0.113.70 port 56583 ssh2
+2026-10-25 08:42:00 sshd[8340]: Accepted password for dave from 10.0.1.14 port 42165 ssh2
+2026-10-25 08:42:05 sshd[3019]: Failed password for erin from 203.0.113.70 port 33618 ssh2
+2026-10-25 08:43:06 sshd[4192]: Accepted password for carol from 10.0.1.13 port 51677 ssh2
+2026-10-25 08:45:00 sshd[3199]: Failed password for invalid user admin from 203.0.113.80 port 38039 ssh2
+2026-10-25 08:46:02 sshd[7507]: Accepted password for dave from 10.0.1.14 port 53024 ssh2

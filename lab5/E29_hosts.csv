@@ -1,0 +1,13 @@
+ip,hostname
+10.0.1.10,ws-10.corp.local
+10.0.1.11,ws-11.corp.local
+10.0.1.12,ws-12.corp.local
+10.0.1.13,ws-13.corp.local
+10.0.1.14,ws-14.corp.local
+10.0.1.15,ws-15.corp.local
+10.0.1.16,ws-16.corp.local
+10.0.1.17,ws-17.corp.local
+10.0.1.18,ws-18.corp.local
+10.0.1.19,ws-19.corp.local
+10.0.9.5,db-01.corp.local
+10.0.9.6,backup-01.corp.local

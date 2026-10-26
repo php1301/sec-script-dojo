@@ -1,0 +1,5 @@
+Contact alice@example.com or bob.smith@corp.co.uk for access.
+No email on this line.
+Reach support: help+vpn@company.io, cc: carol_99@test-site.org
+Invalid: @nouser.com, user@, plain.text
+Duplicate: alice@example.com again
