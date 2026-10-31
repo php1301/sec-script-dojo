@@ -1,0 +1,3 @@
+union select
+or 1=1
+and 1=1

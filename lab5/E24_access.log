@@ -47,6 +47,7 @@
 203.0.113.22 - - [25/Oct/2026:08:04:01 +0000] "GET /static/app.js HTTP/1.1" 200 5837 "-" "Mozilla/5.0"
 203.0.113.18 - - [25/Oct/2026:08:04:04 +0000] "GET /search?q=select+a+gift HTTP/1.1" 302 7011 "-" "Mozilla/5.0"
 198.51.100.77 - - [25/Oct/2026:08:04:09 +0000] "GET /login?user=admin%27-- HTTP/1.1" 200 5537 "-" "Mozilla/5.0"
+198.51.100.77 - - [25/Oct/2026:08:04:12 +0000] "GET /login?user=root%27-- HTTP/1.1" 200 5537 "-" "Mozilla/5.0"
 203.0.113.25 - - [25/Oct/2026:08:04:18 +0000] "GET /search?q=select+a+gift HTTP/1.1" 200 8838 "-" "Mozilla/5.0"
 203.0.113.18 - - [25/Oct/2026:08:04:27 +0000] "GET /login HTTP/1.1" 200 3990 "-" "Mozilla/5.0"
 203.0.113.12 - - [25/Oct/2026:08:04:28 +0000] "GET /search?q=select+a+gift HTTP/1.1" 500 5613 "-" "Mozilla/5.0"
