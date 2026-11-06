@@ -67,8 +67,60 @@ with open('E25_E31_netflow.csv') as f:
     [print(f"By bytes {k}: {v}") for k, v in by_byte.items()]
     print(f"Top by flows {by_ip.most_common(1)}")
     print(f"Top by bytes {by_byte.most_common(1)}")
+print('E25: Script approach')
 
+script_25 = r'''
+    echo "By IP";
+    awk -F, '{print $2}' "$0" | sort | uniq -c | sort -nrk1,1;
+    echo "By Bytes";
+    awk -F',' 'NR>1 {sum[$2]+=$6} END {for (ip in sum) print sum[ip], ip}' "$0" | sort -nrk1,1;
+'''
+r = subprocess.run(
+    ["bash", "-c", script_25, "E25_E31_netflow.csv"],
+    check=True,
+    capture_output=True,
+    timeout=15
+)
+print(r.stdout.decode())
+print(r.stderr.decode())
 # E26: Events per minute (time bucketing)
+print('# E26: Events per minute (time bucketing)')
+with open('E26_app_events.log') as f:
+    FIELDS = ["tz", "level", "msg"]
+    by_minute = Counter()
+    for idx, row in enumerate(csv.DictReader(f, fieldnames=FIELDS), start=1):
+        minute = row["tz"].split(":")[1]
+        by_minute[minute] += 1
+    [print(f"By minute {k}: {v}") for k, v in by_minute.items()]
+    total = sum(by_minute.values())
+    first, last = int(min(by_minute.keys())), int(max(by_minute.keys()))
+    avg_per_min = total / (last - first+1)
+    print(f"{avg_per_min:.3f}")
+    # for i in range(by_minute.items()[::-1])
+print('E26: Script approach')
+
+script_26 = r'''
+    awk 'NR > 1 {
+    minute = substr($1, 1, 16);
+    sum[minute]++;
+    total++;
+    }
+    END {
+    for (min in sum)
+      print min, sum[min];
+    print "Total Events:", total;
+    print "AVG event per minute", total/length(sum);
+    }' "$0"
+'''
+r = subprocess.run(
+    ["bash", "-c", script_26, "E26_app_events.log"],
+    check=True,
+    capture_output=True,
+    timeout=15
+)
+print(r.stdout.decode())
+print(r.stderr.decode())
+
 # E27: Brute-force candidates: 3+ failures with first and last time
 # E28: Correlate two logs with a hashmap of lists — IQ-101
 # E29: Enrich alerts with hostnames (UNKNOWN if missing)
