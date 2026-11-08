@@ -7,6 +7,7 @@ import re
 import urllib.parse as up
 import subprocess
 from collections import Counter
+import json
 
 LAB5_DIR = Path(__file__).resolve().parent / "lab5"
 LAB5_DIR.mkdir(exist_ok=True, parents=True)
@@ -122,6 +123,57 @@ print(r.stdout.decode())
 print(r.stderr.decode())
 
 # E27: Brute-force candidates: 3+ failures with first and last time
+print('E27: Brute force')
+with open('E27_E30_auth.log') as f:
+    # Revise about pattern in text, group capturing
+    pattern_27 = re.compile(r'(\S+ \S+) sshd\[\d+\]: Failed password for (.+) from (\S+)')
+    m = re.findall(pattern_27, f.read())
+    by_user = {}
+    for ts, user, ip in m:
+         # return the first rec or return default val
+        rec = by_user.setdefault(user, {"ip": ip, "first": ts, "last": ts, "count": 0})
+        rec["count"]+=1
+        if rec["last"] < ts: rec["last"] = ts
+    # Revise about json dump
+    candidates = {k: {**v} for k, v in by_user.items() if v["count"]>=3}
+    print(json.dumps(candidates, indent=2))
+# replace the whole part and keep them
+# instead of array of object, mutiple array, dict to hold info
+script_27 = r'''
+    grep "Failed password" "$0" \
+    | sed -E 's/for (.* )?([^ ]+) from/for \2 from/i' \
+    | awk '{
+        for (i=1;i<NF;i++){
+            if($i == "for"){
+                user = $(i+1)
+                check[user]++
+                ts = $1 " " $2
+                if(!first[user]) first[user] = ts
+                if (last[user] < ts)
+                    last[user] = ts
+                break
+            }
+        }
+    }
+        END {
+            for (u in check){
+                if(check[u] >=3){
+                    print "User:", u, "Total:", check[u], "First attempt:", first[u], "Last attempt", last[u] 
+                    printf "User: %s | Total: %d | First attempt: %s | Last attempt: %s\n", u, check[u], first[u], last[u]
+                }
+            }
+        }
+    '
+'''
+r=subprocess.run(
+    ["bash", "-c", script_27, "E27_E30_auth.log"],
+    check=True,
+    capture_output=True,
+    text=True
+)
+
+print(r.stdout)
+
 # E28: Correlate two logs with a hashmap of lists — IQ-101
 # E29: Enrich alerts with hostnames (UNKNOWN if missing)
 # E30: Suspicious success: fail, then ok, per user
